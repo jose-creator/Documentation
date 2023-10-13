@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+#si no sucede nada poner este comando en la consola de la raspberry:  sudo /etc/init.d/motion stop
 cap=cv2.VideoCapture(0)
 """
 lower_range=np.array([150,142,7])
