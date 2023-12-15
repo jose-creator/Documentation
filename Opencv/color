@@ -34,12 +34,11 @@ while True:
             b.append(x)
             x2 = int(x+x+w)//2
             y2 = int(y+y+h)//2
-            
             cv2.circle(frame,(x2,y2),5,(255,255,255),-1)
             cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),2)
             #cv2.putText(frame,("DETECT"),(10,60),cv2.FONT_HERSHEY_SIMPLEX,0.6,(0,255,0),2)
         g = len(b)
-        cv2.putText(frame,("Green: " + str(g)),(200,432),cv2.FONT_HERSHEY_SIMPLEX,0.6,(255,255,255),2)
+        #cv2.putText(frame,("Green: " + str(g)),(200,432),cv2.FONT_HERSHEY_SIMPLEX,0.6,(255,255,255),2)
     
     cnts,_=cv2.findContours(mask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
     a = []
@@ -55,13 +54,15 @@ while True:
             #cv2.putText(frame,("DETECT"),(10,60),cv2.FONT_HERSHEY_SIMPLEX,0.6,(0,0,255),2)
     
         r=len(a)
-        cv2.putText(frame,("Red: " + str(r)),(111,432),cv2.FONT_HERSHEY_SIMPLEX,0.6,(255,255,255),2)
+        #cv2.putText(frame,("Red: " + str(r)),(111,432),cv2.FONT_HERSHEY_SIMPLEX,0.6,(255,255,255),2)
 #########################################################################################################
+    #blur = cv2.GaussianBlur(frame,(5,5),1)
+    #blur = cv2.bilateralFilter(blur,29,100,100)
 
-    cv2.imshow('g',g)
-    cv2.imshow('res',res)
-    cv2.imshow('mask2',mask2)
-    cv2.imshow('res2',res2)
+    #cv2.imshow('g',g)
+    #cv2.imshow('res',res)
+    #cv2.imshow('mask2',mask2)
+    #cv2.imshow('res2',res2)
     cv2.imshow("FRAME",frame)
 
     if cv2.waitKey(1)&0xFF==27:
