@@ -1,39 +1,43 @@
 import cv2
 import numpy as np
 
-cap=cv2.VideoCapture(0)
+cap=cv2.VideoCapture(0) #capturar el video atra vez de la camara conectada o detectada
 
 while True:
     
-    ret,frame=cap.read()
-    frame=cv2.resize(frame,(640,480))
+    ret,frame=cap.read() #
+    frame=cv2.resize(frame,(640,480)) #tamaño que se quiere mostrar en la pantalla del video (ese es el limite que hay en la raspberry camera), se coloca (x,y)
 
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV) #cambiar el fromato del color para una mayor facilidad en su deteccion
 
-    lower_r=np.array([150,142,7])
-    upper_r=np.array([179,255,255])
+    lower_r=np.array([150,142,7])   
+    upper_r=np.array([179,255,255]) # el rango de cirto color que se quiere capturar en este caso rojo fuerte y suave
 
     lower_g=np.array([56,36,26])
-    upper_g=np.array([88,255,255])
+    upper_g=np.array([88,255,255]) # lo mismo aqui pero en este caso con el verde
 
     mask = cv2.inRange(hsv, lower_r, upper_r)
-    mask2 = cv2.inRange(hsv, lower_g, upper_g)
+    mask2 = cv2.inRange(hsv, lower_g, upper_g) #estas dos son mascaras que sirven para que me muestre solo el objeto y no el fondo
 
     res = cv2.bitwise_and(frame,frame, mask= mask)
-    res2 = cv2.bitwise_and(frame,frame, mask= mask2)
+    res2 = cv2.bitwise_and(frame,frame, mask= mask2)  #estas dos son mascaras que sirven para que me muestre solo el color del objeto y no el fondo
 
-    lr = cv2.line(frame,(213,0),(213,480),(255,255,255),4)
-    lg = cv2.line(frame,(426,0),(426,480),(255,255,255),4)
-##################contornos##################################################################33
-    cnts,_=cv2.findContours(mask2,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
+    #lr = cv2.line(frame,(213,0),(213,480),(255,255,255),4)
+    #lg = cv2.line(frame,(426,0),(426,480),(255,255,255),4) #estas son lineas que se dibujaron en - 
+                                                            #la pantalla principal que se muestra de la camara. en en las mask y res,
+                                                            #igualmente ignorar esto ya que no se logro terminar su uso
+##################Algoritmo para detectar y mostrar los contorno y centro del obejeto/color######################
+    cnts,_=cv2.findContours(mask2,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE) #se crea una variable que sirve en que mascara queiro encontrar los contornos
     b = []
     for c in cnts:
-        x=640
+        x=640 #limite de x que ya se conoce anteriomente
         if cv2.contourArea(c)>x:
-            x,y,w,h=cv2.boundingRect(c)
-            b.append(x)
-            x2 = int(x+x+w)//2
-            y2 = int(y+y+h)//2
+            x,y,w,h=cv2.boundingRect(c) #se crea x,y altura (h) y ancho(w)
+            b.append(x) #se agrega la nueva x a la lista creada 
+            x2 = int(x+x+w)//2 #se realiza un calculo para sacar el centro del objeto en este caso al eje X se -
+                               # suma entre consigomismo para conseguir el eje X total, luego e sumo el ancho detectado y lo divido por la mitad (2)
+
+            y2 = int(y+y+h)//2 #y aqui el eje Y se suma con el mismo para conseguir el eje Y total y luego se le suma la altura y se divide el resultado por la mitad(2)
             cv2.circle(frame,(x2,y2),5,(255,255,255),-1)
             cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),2)
             #cv2.putText(frame,("DETECT"),(10,60),cv2.FONT_HERSHEY_SIMPLEX,0.6,(0,255,0),2)
