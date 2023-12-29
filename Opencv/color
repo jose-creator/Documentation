@@ -60,15 +60,18 @@ while True:
         r=len(a)
         #cv2.putText(frame,("Red: " + str(r)),(111,432),cv2.FONT_HERSHEY_SIMPLEX,0.6,(255,255,255),2)
 #########################################################################################################
+    #se realiza el suavizado ya explicado aneriormente
     #blur = cv2.GaussianBlur(frame,(5,5),1)
     #blur = cv2.bilateralFilter(blur,29,100,100)
 
+    #se muetra el resultado del programa en diferentes ventanas
     #cv2.imshow('g',g)
     #cv2.imshow('res',res)
     #cv2.imshow('mask2',mask2)
     #cv2.imshow('res2',res2)
     cv2.imshow("FRAME",frame)
 
+    #luego se coloca el wait key con la tecla Esc para finalizar el programa
     if cv2.waitKey(1)&0xFF==27:
         break
 
